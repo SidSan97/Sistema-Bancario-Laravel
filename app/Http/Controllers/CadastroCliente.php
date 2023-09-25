@@ -23,7 +23,7 @@ class CadastroCliente extends Controller
         $user->cep          = $request->cep;
         $user->estado       = $request->estado;
         $user->cidade       = $request->cidade;
-        $user->cidade       = $request->bairro;
+        $user->bairro       = $request->bairro;
         $user->rua          = $request->rua;
         $user->complemento  = $request->complemento;
 
