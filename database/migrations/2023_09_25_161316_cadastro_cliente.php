@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('telefone');
             $table->string('estado_civil');
             $table->string('sexo');
+            $table->string('cep');
             $table->string('estado');
             $table->string('cidade');
             $table->string('bairro');
@@ -38,6 +39,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('cliente');
     }
 };
