@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('senha');
             $table->string('rg')->unique();
-            $table->string('cpf_cnpj')->unique();
+            $table->string('cpf')->unique();
             $table->string('data_nascimento');
             $table->string('telefone');
             $table->string('estado_civil');
@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('bairro');
             $table->string('rua');
             $table->string('complemento');
+            $table->decimal('saldo', 10, 2);
             $table->rememberToken();
             $table->timestamps();
         });
