@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class LoginModel extends Model
+class DadosBancarioModel extends Model
 {
-    protected $table = 'login';
+    protected $table = 'dados_bancarios';
 
     use HasFactory;
 }

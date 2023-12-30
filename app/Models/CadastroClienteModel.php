@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CadastroClienteModel extends Model
 {
-    protected $table = 'cliente';
+    protected $table = 'dados_cadastro_cliente';
 
     use HasFactory;
 }

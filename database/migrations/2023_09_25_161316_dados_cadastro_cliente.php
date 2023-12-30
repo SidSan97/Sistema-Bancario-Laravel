@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('cliente', function (Blueprint $table) {
+        Schema::create('dados_cadastro_cliente', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
             $table->string('email')->unique();
@@ -29,7 +29,6 @@ return new class extends Migration
             $table->string('bairro');
             $table->string('rua');
             $table->string('complemento');
-            $table->decimal('saldo', 10, 2);
             $table->rememberToken();
             $table->timestamps();
         });
