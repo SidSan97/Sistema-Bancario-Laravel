@@ -18,7 +18,6 @@ class CadastroClienteController extends Controller
 
             $user->nome         = $request->nome;
             $user->email        = $request->email;
-            $user->senha        = $request->senha;
             $user->rg           = $request->rg;
             $user->cpf          = $request->cpf_cnpj;
             $user->data_nascimento = $request->data_nascimento;
@@ -36,7 +35,7 @@ class CadastroClienteController extends Controller
 
                 $id = $user->getKey();
 
-                $dados = $this->dadosBancario($id, $user->nome, $user->email,  $user->senha);
+                $dados = $this->dadosBancario($id, $user->email, $request->senha);
 
                 if ($dados === true) {
                     DB::commit();

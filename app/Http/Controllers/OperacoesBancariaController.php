@@ -14,7 +14,7 @@ class OperacoesBancariaController extends Controller
 
         $dados = DadosBancarioModel::where('numero_conta', $numeroConta)->first();
 
-        if (!$dados) {
+        if ($dados == null) {
             return response()->json([
                 "status"  => 204,
                 "message" => "Nenhuma conta bancária foi encontrada"
@@ -33,6 +33,27 @@ class OperacoesBancariaController extends Controller
 
     public function transferencia(Request $request)
     {
+        $usuario = DadosBancarioModel::findOrFail(1);
+        $dados = $this->verificarDestinatario($request->num_conta_destinatario);
 
+        if($dados->status == 204) {
+            return $dados;
+        }
+
+        if($dados->saldo )
+    }
+
+    public function verificarDestinatario($numeroConta)
+    {
+        $dados = DadosBancarioModel::where('numero_conta', $numeroConta)->first();
+
+        if ($dados == null) {
+            return response()->json([
+                "status"  => 204,
+                "message" => "Nenhuma conta bancária foi encontrada"
+            ], 204);
+        }
+
+        return $dados;
     }
 }
