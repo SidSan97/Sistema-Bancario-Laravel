@@ -14,12 +14,13 @@ return new class extends Migration
         Schema::create('extrato', function (Blueprint $table) {
             $table->id();
             $table->string('titulo', 30);
-            $table->string('descricao', 100)->nullable();
+            $table->string('mensagem', 100)->nullable();
             $table->string('nome_remetente', 50);
             $table->string('nome_destinatario', 50);
             $table->decimal('valor', 10, 2);
-            $table->string('tipo_movimentacao', 20);
-            $table->timestamps('data');
+            $table->string('movimentacao', 20);
+            $table->string('metodo', 50);
+            $table->timestamps();
             $table->unsignedBigInteger('id_remetente');
             $table->unsignedBigInteger('id_destinatario');
 
