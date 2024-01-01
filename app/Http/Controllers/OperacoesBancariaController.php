@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DadosBancarioModel;
+use App\Models\ExtratoModel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -35,7 +36,10 @@ class OperacoesBancariaController extends Controller
     {
         DB::beginTransaction();
 
-        $usuario = DadosBancarioModel::findOrFail(1);
+        $usuario = DadosBancarioModel::join('dados_cadastro_cliente', 'dados_bancarios.id_cliente', '=', 'dados_cadastro_cliente.id')
+        ->where('dados_bancarios.id_cliente', 2)
+        ->first();
+
         $dados = $this->verificarDestinatario($request->num_conta_destinatario);
 
         if($dados == false) {
@@ -52,8 +56,8 @@ class OperacoesBancariaController extends Controller
             ], 400);
         }
 
-        $usuario->saldo -= $request->valor_transferencia;
-        $dados->saldo += $request->valor_transferencia;
+        $usuario->saldo = ($usuario->saldo - $request->valor_transferencia);
+        $dados->saldo   = ($dados->saldo + $request->valor_transferencia);
 
         if(!$usuario->save() || !$dados->save()) {
             DB::rollBack();
@@ -64,6 +68,8 @@ class OperacoesBancariaController extends Controller
             ], 500);
         }
 
+        //$this->InserirNoExtrato("Transferência", null, $usuario->nome, $dados->nome, $request->valor_transferencia, "saída", "TED", $usuario->id, $dados->id);
+
         DB::commit();
         return response()->json([
             "status"  => 200,
@@ -71,14 +77,44 @@ class OperacoesBancariaController extends Controller
         ], 200);
     }
 
-    public function verificarDestinatario($numeroConta)
+    public function verificarDestinatario(int $numeroConta)
     {
-        $dados = DadosBancarioModel::where('numero_conta', $numeroConta)->first();
+        $dados = DadosBancarioModel::join('dados_cadastro_cliente', 'dados_bancarios.id_cliente', '=', 'dados_cadastro_cliente.id')
+                ->where('dados_bancarios.numero_conta', $numeroConta)
+                ->first();
 
         if ($dados == null) {
             return false;
         }
 
         return $dados;
+    }
+
+    public function InserirNoExtrato(string $titulo,
+                    string $msg = null,
+                    string $nomeRem,
+                    string $nomeDest,
+                    float $valor,
+                    string $movimentacao,
+                    string $metodo,
+                    int $idRem,
+                    int $idDest
+                )
+    {
+        $extrato = new ExtratoModel();
+
+        $extrato->titulo = $titulo;
+        $extrato->mensagem = $msg;
+        $extrato->nome_remetente = $nomeRem;
+        $extrato->nome_destinatario = $nomeDest;
+        $extrato->valor = $valor;
+        $extrato->movimentacao = $movimentacao;
+        $extrato->metodo = $metodo;
+        $extrato->id_remetente = $idRem;
+        $extrato->id_destinatario = $idDest;
+
+        $extrato->save();
+
+        return;
     }
 }
