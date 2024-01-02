@@ -16,21 +16,14 @@ class LoginController extends Controller
         ->where('dados_bancarios.email', $email)
         ->first();
 
-        if($credencial == null) {
-            return response()->json([
-                "status"  => 204,
-                "message" => "Nenhuma conta bancária foi encontrada"
-            ], 204);
-        }
-
         if(password_verify($senha, $credencial->senha)) {
-            $dados = [
-                "logado" => true,
-                "id"     => $credencial->id_cliente,
-                "nome"   => $credencial->nome
-            ];
+           session([
+            "logado" => true,
+            "id" => $credencial->id_cliente,
+            "nome" => $credencial->nome
+           ]);
 
-            $request->session()->put($dados);
+           return;
 
         } else {
 
@@ -41,8 +34,8 @@ class LoginController extends Controller
         }
     }
 
-    public function logout(Request $request)
+    public function logout()
     {
-        return $request->session()->all();
+        return session()->all();
     }
 }
