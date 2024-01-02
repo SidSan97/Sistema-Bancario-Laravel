@@ -78,6 +78,7 @@ class CadastroClienteController extends Controller
 
         $user = new DadosBancarioModel;
 
+        $senha = password_hash($senha, PASSWORD_DEFAULT);
         $user->id_cliente = $id;
         $user->email = $email;
         $user->senha = $senha;
