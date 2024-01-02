@@ -36,7 +36,7 @@ class OperacoesBancariaController extends Controller
     {
         DB::beginTransaction();
 
-        $usuario = DadosBancarioModel::join('dados_cadastro_cliente', 'dados_bancarios.id_cliente', '=', 'dados_cadastro_cliente.id')
+        $usuario = DadosBancarioModel::join('dados_cadastro_cliente', 'dados_bancarios.id_cliente', '=', 'dados_cadastro_cliente.id_cadastro')
         ->where('dados_bancarios.id_cliente', 2)
         ->first();
 
