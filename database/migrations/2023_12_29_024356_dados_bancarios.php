@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('dados_bancarios', function (Blueprint $table) {
-            $table->id();
+            $table->id('id_dados');
             $table->unsignedBigInteger('id_cliente'); // Chave estrangeira
             $table->string('email')->unique();
             $table->string('senha');

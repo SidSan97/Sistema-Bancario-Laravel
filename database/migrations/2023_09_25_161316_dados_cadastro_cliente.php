@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('dados_cadastro_cliente', function (Blueprint $table) {
-            $table->id();
+            $table->id('id_cadastro');
             $table->string('nome');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
