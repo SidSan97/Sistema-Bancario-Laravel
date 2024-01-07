@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('dados_bancarios', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('id_cliente'); // Chave estrangeira
+            $table->id('id_dados');
+            $table->unsignedBigInteger('id_cadastro'); // Chave estrangeira
             $table->string('email')->unique();
             $table->string('senha');
             $table->string('agencia', 4);
@@ -24,7 +24,7 @@ return new class extends Migration
             $table->timestamps();
 
             // Definir a chave estrangeira
-            $table->foreign('id_cliente')->references('id')->on('dados_cadastro_cliente');
+            $table->foreign('id_cadastro')->references('id_cadastro')->on('dados_cadastro_cliente');
         });
     }
 

@@ -69,7 +69,7 @@ class CadastroClienteController extends Controller
 
             return response()->json([
                 "status"  => 500,
-                "message" => "Erro interno do servidor"
+                "message" => "Erro interno do servidor: " . $e->getMessage()
             ], 500);
         }
     }
@@ -78,7 +78,7 @@ class CadastroClienteController extends Controller
 
         $user = new DadosBancarioModel;
 
-        $user->id_cliente = $id;
+        $user->id_cadastro = $id;
         $user->email = $email;
         $user->senha = $senha;
         $user->agencia = 1162;

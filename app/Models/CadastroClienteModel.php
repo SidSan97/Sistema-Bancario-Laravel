@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class CadastroClienteModel extends Model
 {
     protected $table = 'dados_cadastro_cliente';
+    protected $primaryKey = 'id_cadastro';
 
     use HasFactory;
 }

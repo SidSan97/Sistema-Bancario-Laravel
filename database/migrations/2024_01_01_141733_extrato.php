@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('extrato', function (Blueprint $table) {
-            $table->id();
+            $table->id('id_extrato');
             $table->string('titulo', 30);
             $table->string('mensagem', 100)->nullable();
             $table->string('nome_remetente', 50);
@@ -24,8 +24,8 @@ return new class extends Migration
             $table->unsignedBigInteger('id_remetente');
             $table->unsignedBigInteger('id_destinatario');
 
-            $table->foreign('id_remetente')->references('id')->on('dados_cadastro_cliente');
-            $table->foreign('id_destinatario')->references('id')->on('dados_cadastro_cliente');
+            $table->foreign('id_remetente')->references('id_cadastro')->on('dados_cadastro_cliente');
+            $table->foreign('id_destinatario')->references('id_cadastro')->on('dados_cadastro_cliente');
         });
     }
 
