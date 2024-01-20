@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ExtratoModel extends Model
 {
     protected $table = 'extrato';
+    protected $primaryKey = 'id_extrato';
 
     use HasFactory;
 }

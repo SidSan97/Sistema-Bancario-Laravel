@@ -36,8 +36,8 @@ class OperacoesBancariaController extends Controller
     {
         DB::beginTransaction();
 
-        $usuario = DadosBancarioModel::join('dados_cadastro_cliente', 'dados_bancarios.id_cliente', '=', 'dados_cadastro_cliente.id_cadastro')
-        ->where('dados_bancarios.id_cliente', 2)
+        $usuario = DadosBancarioModel::join('dados_cadastro_cliente', 'dados_bancarios.id_cadastro', '=', 'dados_cadastro_cliente.id_cadastro')
+        ->where('dados_bancarios.id_cadastro', 1)
         ->first();
 
         $dados = $this->verificarDestinatario($request->num_conta_destinatario);
@@ -79,7 +79,7 @@ class OperacoesBancariaController extends Controller
 
     public function verificarDestinatario(int $numeroConta)
     {
-        $dados = DadosBancarioModel::join('dados_cadastro_cliente', 'dados_bancarios.id_cliente', '=', 'dados_cadastro_cliente.id')
+        $dados = DadosBancarioModel::join('dados_cadastro_cliente', 'dados_bancarios.id_cadastro', '=', 'dados_cadastro_cliente.id_cadastro')
                 ->where('dados_bancarios.numero_conta', $numeroConta)
                 ->first();
 
