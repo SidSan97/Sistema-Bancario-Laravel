@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\CadastroClienteModel;
 use App\Models\DadosBancarioModel;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 class CadastroClienteController extends Controller
@@ -14,37 +15,41 @@ class CadastroClienteController extends Controller
         DB::beginTransaction();
 
         try {
-            $user = new CadastroClienteModel;
+            $cadastro = new CadastroClienteModel;
 
-            $user->nome         = $request->nome;
-            $user->email        = $request->email;
-            $user->rg           = $request->rg;
-            $user->cpf          = $request->cpf_cnpj;
-            $user->data_nascimento = $request->data_nascimento;
-            $user->telefone     = $request->telefone;
-            $user->estado_civil = $request->estado_civil;
-            $user->sexo         = $request->sexo;
-            $user->cep          = $request->cep;
-            $user->estado       = $request->estado;
-            $user->cidade       = $request->cidade;
-            $user->bairro       = $request->bairro;
-            $user->rua          = $request->rua;
-            $user->complemento  = $request->complemento;
+            $cadastro->nome         = $request->nome;
+            $cadastro->email        = $request->email;
+            $cadastro->rg           = $request->rg;
+            $cadastro->cpf          = $request->cpf_cnpj;
+            $cadastro->data_nascimento = $request->data_nascimento;
+            $cadastro->telefone     = $request->telefone;
+            $cadastro->estado_civil = $request->estado_civil;
+            $cadastro->sexo         = $request->sexo;
+            $cadastro->cep          = $request->cep;
+            $cadastro->estado       = $request->estado;
+            $cadastro->cidade       = $request->cidade;
+            $cadastro->bairro       = $request->bairro;
+            $cadastro->rua          = $request->rua;
+            $cadastro->complemento  = $request->complemento;
 
-            if ($user->save()) {
+            if ($cadastro->save()) {
 
-                $id = $user->getKey();
+                $id = $cadastro->getKey();
 
-                $dados = $this->dadosBancario($id, $user->email, $request->senha);
+                $dados = $this->dadosBancario($id);
 
-                if ($dados === true) {
-                    DB::commit();
+                if ($dados) {
 
-                    return response()->json([
-                        "status"  => 201,
-                        "message" => "Cadastro feito com sucesso"
-                    ], 201);
+                    $user = $this->user($id, $request->nome, $request->email ,$request->senha);
 
+                    if($user) {
+                        DB::commit();
+
+                        return response()->json([
+                            "status"  => 201,
+                            "message" => "Cadastro feito com sucesso"
+                        ], 201);
+                    }
                 } else {
 
                     DB::rollBack();
@@ -74,20 +79,33 @@ class CadastroClienteController extends Controller
         }
     }
 
-    public function dadosBancario($id, $email, $senha) {
+    public function dadosBancario($id) {
 
-        $user = new DadosBancarioModel;
+        $dados = new DadosBancarioModel;
 
-        $user->id_cadastro = $id;
-        $user->email = $email;
-        $user->senha = $senha;
-        $user->agencia = 1162;
-        $user->numero_conta = mt_rand(100000, 999999);
-        $user->saldo = 0;
+        $dados->id_cadastro = $id;
+        $dados->agencia = 1162;
+        $dados->numero_conta = mt_rand(100000, 999999);
+        $dados->saldo = 0;
 
-        if(!$user->save()) {
+        if(!$dados->save()) {
             return false;
         }
+
+        return true;
+    }
+
+    public function user($id, $nome ,$email, $senha) {
+
+        $user = new User();
+
+        $user->id_cadastro = $id;
+        $user->name = $nome;
+        $user->email = $email;
+        $user->password = $senha;
+
+        if(!$user->save())
+            return false;
 
         return true;
     }

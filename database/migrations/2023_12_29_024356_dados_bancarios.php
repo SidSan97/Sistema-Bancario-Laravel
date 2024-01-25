@@ -14,8 +14,6 @@ return new class extends Migration
         Schema::create('dados_bancarios', function (Blueprint $table) {
             $table->id('id_dados');
             $table->unsignedBigInteger('id_cadastro'); // Chave estrangeira
-            $table->string('email')->unique();
-            $table->string('senha');
             $table->string('agencia', 4);
             $table->string('numero_conta', 6)->unique();
             $table->decimal('saldo', 10, 2);
