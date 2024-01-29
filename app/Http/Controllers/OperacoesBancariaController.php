@@ -17,9 +17,9 @@ class OperacoesBancariaController extends Controller
 
         if ($dados == null) {
             return response()->json([
-                "status"  => 204,
+                "status"  => 400,
                 "message" => "Nenhuma conta bancária foi encontrada"
-            ], 204);
+            ], 400);
         }
 
         $dados->saldo += $request->valor_deposito;
@@ -44,9 +44,9 @@ class OperacoesBancariaController extends Controller
 
         if($dados == false) {
             return response()->json([
-                "status"  => 204,
+                "status"  => 400,
                 "message" => "Nenhuma conta bancária foi encontrada"
-            ], 204);
+            ], 400);
         }
 
         if(($usuario->saldo) < ($request->valor_transferencia)) {
@@ -68,7 +68,7 @@ class OperacoesBancariaController extends Controller
             ], 500);
         }
 
-        //$this->InserirNoExtrato("Transferência", null, $usuario->nome, $dados->nome, $request->valor_transferencia, "saída", "TED", $usuario->id, $dados->id);
+        $this->InserirNoExtrato("Transferência", null, $usuario->nome, $dados->nome, $request->valor_transferencia, "saída", "TED", $usuario->id_cadastro, $dados->id_dados);
 
         DB::commit();
         return response()->json([
@@ -116,5 +116,15 @@ class OperacoesBancariaController extends Controller
         $extrato->save();
 
         return;
+    }
+
+    public function consultarSaldo()
+    {
+        $dados = DadosBancarioModel::where('numero_conta', 577662)->first();
+
+        return response()->json([
+            "status"  => 200,
+            "message" => $dados->saldo
+        ], 200);
     }
 }
