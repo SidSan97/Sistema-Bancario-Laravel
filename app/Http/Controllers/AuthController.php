@@ -33,7 +33,7 @@ class AuthController extends Controller
         ];
 
         if (! $token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['error' => 'Combinação de E-mail e senha são inválidas'], 401);
         }
 
         return $this->respondWithToken($token);
