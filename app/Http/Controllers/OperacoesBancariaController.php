@@ -68,7 +68,7 @@ class OperacoesBancariaController extends Controller
             ], 500);
         }
 
-        //$this->InserirNoExtrato("Transferência", null, $usuario->nome, $dados->nome, $request->valor_transferencia, "saída", "TED", $usuario->id, $dados->id);
+        $this->InserirNoExtrato("Transferência", null, $usuario->nome, $dados->nome, $request->valor_transferencia, "saída", "TED", $usuario->id_cadastro, $dados->id_cadastro);
 
         DB::commit();
         return response()->json([
@@ -116,5 +116,22 @@ class OperacoesBancariaController extends Controller
         $extrato->save();
 
         return;
+    }
+
+    public function getSaldo()
+    {
+        $dados = DadosBancarioModel::where('numero_conta', 453794)->first();
+
+        if ($dados == null) {
+            return response()->json([
+                "status"  => 400,
+                "message" => "Erro ao consultar saldo"
+            ], 204);
+        }
+
+        return response()->json([
+            "status"  => 200,
+            "message" => $dados->saldo
+        ], 200);
     }
 }
