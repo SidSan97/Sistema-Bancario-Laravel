@@ -13,7 +13,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('criar-conta', [CadastroClienteController::class, 'cadastro'])->name('criar-conta');
 Route::post('depositar', [OperacoesBancariaController::class, 'depositar']);
 Route::post('transferencia', [OperacoesBancariaController::class, 'transferencia']);
-Route::get('saldo', [OperacoesBancariaController::class, 'consultarSaldo']);
+Route::get('saldo', [OperacoesBancariaController::class, 'getSaldo']);
 
 //JWT
 Route::group([
